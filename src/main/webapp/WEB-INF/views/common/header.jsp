@@ -12,7 +12,7 @@
 	//쿠키처리
 	Cookie[] cookies = request.getCookies();
 	String saveMemberId = null;
-	if(cookies != null){
+	if(cookies != null){  
 		for(Cookie cookie : cookies){
 			String name = cookie.getName();
 			String value = cookie.getValue();
