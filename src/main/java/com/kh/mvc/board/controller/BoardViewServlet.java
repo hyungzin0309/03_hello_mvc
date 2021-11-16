@@ -1,6 +1,8 @@
 package com.kh.mvc.board.controller;
 
 import java.io.IOException;
+import java.util.List;
+
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.Cookie;
@@ -10,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import com.kh.mvc.board.model.service.BoardService;
 import com.kh.mvc.board.model.vo.Board;
+import com.kh.mvc.board.model.vo.BoardComment;
 
 /**
  * Servlet implementation class BoardViewServlet
@@ -72,8 +75,14 @@ public class BoardViewServlet extends HttpServlet {
 		System.out.println(board.getContent());
 		board.setContent(content);
 		
+		// 댓글목록 조회
+		List<BoardComment> commentList = boardService.selectBoardCommentList(boardNo);
+		System.out.println("[BoardViewServlet] commentList = "+commentList);
+		
+		
 		
 		// 3. 응답처리
+		request.setAttribute("commentList", commentList);
 		request.setAttribute("board", board);
 		request
 			.getRequestDispatcher("/WEB-INF/views/board/boardView.jsp")

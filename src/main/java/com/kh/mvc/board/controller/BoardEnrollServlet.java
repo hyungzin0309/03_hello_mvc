@@ -39,6 +39,7 @@ public class BoardEnrollServlet extends HttpServlet {
 		try {// 1. 사용자 입력 처리
 			
 			// A. server computer에 사용자 업로드파일 저장
+			// cos.jar : 파일 업로드 기능 구현 오픈소스 라이브러리
 			// 서버 어떤 디렉토리에 파일을 저장할 것인지
 			String saveDirectory = getServletContext().getRealPath("/upload/board");
 			System.out.println("[BoardEnrollServlet] saveDirectory = "+saveDirectory);

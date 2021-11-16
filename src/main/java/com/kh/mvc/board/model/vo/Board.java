@@ -6,6 +6,7 @@ import java.util.List;
 
 public class Board extends BoardEntity implements Serializable{
 	
+	private int commentCount;
 	private int attachCount; // 첨부파일 수
 	private List<Attachment> attachments;
 	public Board() {
@@ -23,6 +24,14 @@ public class Board extends BoardEntity implements Serializable{
 		this.attachments = attachments;
 	}
 
+	public Board(int no, String title, String writer, String content, int readCount, Date regDate, int commentCount,
+			int attachCount, List<Attachment> attachments) {
+		super(no, title, writer, content, readCount, regDate);
+		this.commentCount = commentCount;
+		this.attachCount = attachCount;
+		this.attachments = attachments;
+	}
+
 	public int getAttachCount() {
 		return attachCount;
 	}
@@ -35,9 +44,17 @@ public class Board extends BoardEntity implements Serializable{
 	public void setAttachments(List<Attachment> attachments) {
 		this.attachments = attachments;
 	}
+	
+	public int getCommentCount() {
+		return commentCount;
+	}
+	public void setCommentCount(int commentCount) {
+		this.commentCount = commentCount;
+	}
 	@Override
 	public String toString() {
 		return "Board ["+super.toString()
+			+ ", commentCount=" + commentCount
 			+ ", attachCount=" + attachCount
 			+ ", attachments=" + attachments + "]";
 	}

@@ -17,6 +17,7 @@ import java.util.Properties;
 import com.kh.mvc.board.model.exception.BoardException;
 import com.kh.mvc.board.model.vo.Attachment;
 import com.kh.mvc.board.model.vo.Board;
+import com.kh.mvc.board.model.vo.BoardComment;
 import com.kh.mvc.member.model.dao.MemberDao;
 
 public class BoardDao {
@@ -56,7 +57,8 @@ public class BoardDao {
 				int readCount = rset.getInt("read_count");
 				Date regDate = rset.getDate("reg_date");
 				int attachCount = rset.getInt("attach_count");
-				Board board = new Board(no,title,writer,content,readCount,regDate,attachCount,null);
+				int commentCount = rset.getInt("comment_count");
+				Board board = new Board(no,title,writer,content,readCount,regDate,commentCount,attachCount,null);
 				list.add(board);
 			}
 			
@@ -338,6 +340,135 @@ public class BoardDao {
 		}finally {
 			close(pstmt);
 		}
+		return result;
+	}
+
+
+
+	public int updateBoard(Board board, Connection conn) {
+		int result = 0;
+		String sql = prop.getProperty("updateBoard");
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setString(1, board.getTitle());
+			pstmt.setString(2, board.getContent());
+			pstmt.setInt(3, board.getNo());
+			
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BoardException("게시물 수정 오류");
+		}finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+
+
+	public int deleteAttachment(Connection conn, int delFileNo) {
+		int result = 0;
+		PreparedStatement pstmt = null;
+		String sql = prop.getProperty("deleteAttachment");
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, delFileNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BoardException();
+		}finally {
+			close(pstmt);
+		}
+		
+		
+		return result;
+	}
+
+
+
+	public List<BoardComment> selectBoardCommentList(int boardNo, Connection conn) {
+		List<BoardComment> list = new ArrayList<>();
+		String sql = prop.getProperty("selectBoardCommentList");
+		PreparedStatement pstmt = null;
+		ResultSet rset = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, boardNo);
+			rset = pstmt.executeQuery();
+			while(rset.next()) {
+				BoardComment bc = new BoardComment();
+				bc.setNo(rset.getInt("no"));
+				bc.setCommentLevel(rset.getInt("comment_level"));
+				bc.setWriter(rset.getString("writer"));
+				bc.setContent(rset.getString("content"));
+				bc.setBoardNo(rset.getInt("board_no"));
+				bc.setCommentRef(rset.getInt("comment_ref")); // 댓글인 경우 null이고, 이는 0으로 치환된다.
+				bc.setRegDate(rset.getDate("reg_date"));
+				list.add(bc);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BoardException("댓글 불러오기 오류");
+		}finally{
+			close(rset);
+			close(pstmt);
+		}
+		return list;
+	}
+
+
+
+	public int insertBoardComment(Connection conn, BoardComment bc) {
+		int result = 0;
+		String sql = prop.getProperty("insertBoardComment");
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1,bc.getCommentLevel()); // 1 or 2
+			pstmt.setString(2,bc.getWriter());
+			pstmt.setString(3,bc.getContent());
+			pstmt.setInt(4,bc.getBoardNo());
+			// 참조하는 댓글이 없는 경우 null을 넣어줘야 하는데 setInt로는 불가
+			// setObject 사용
+//			pstmt.setInt(5,bc.getCommentRef());
+			pstmt.setObject(5, bc.getCommentRef() == 0? null : bc.getCommentRef());
+			result = pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BoardException("댓글 등록 오류");
+		} finally {
+			close(pstmt);
+		}
+		return result;
+	}
+
+
+
+	public int commentDelete(Connection conn, int commentNo) {
+		int result = 0;
+		String sql = prop.getProperty("commentDelete");
+		PreparedStatement pstmt = null;
+		
+		try {
+			pstmt = conn.prepareStatement(sql);
+			pstmt.setInt(1, commentNo);
+			result = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			e.printStackTrace();
+			throw new BoardException("댓글 삭제 오류");
+		}finally {
+			close(pstmt);
+		}
+		
+		
 		return result;
 	}
 }

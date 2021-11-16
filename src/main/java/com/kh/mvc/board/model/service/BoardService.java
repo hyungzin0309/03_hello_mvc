@@ -13,6 +13,7 @@ import java.util.Map;
 import com.kh.mvc.board.model.dao.BoardDao;
 import com.kh.mvc.board.model.vo.Attachment;
 import com.kh.mvc.board.model.vo.Board;
+import com.kh.mvc.board.model.vo.BoardComment;
 import com.kh.mvc.member.model.dao.MemberDao;
 
 public class BoardService {
@@ -116,6 +117,87 @@ public class BoardService {
 			
 		}catch(Exception e) {
 			rollback(conn);
+		}finally {
+			close(conn);
+		}
+		
+		return result;
+	}
+	public int updateBoard(Board board) {
+		int result = 0;
+		Connection conn = null;
+		
+		try {
+			conn = getConnection();
+			result = boardDao.updateBoard(board,conn);
+			
+			List<Attachment> list = board.getAttachments();
+			if(list != null && !list.isEmpty()) {
+				for(Attachment attach : list) {
+					result = boardDao.insertAttachment(conn,attach);
+				}
+			}
+			commit(conn);
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally{
+			close(conn);
+		}
+		
+		return result;
+	}
+	public int deleteAttachment(int delFileNo) {
+		int result = 0;
+		Connection conn = null;
+		
+		try {
+			conn = getConnection();
+			result = boardDao.deleteAttachment(conn, delFileNo);
+			commit(conn);
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		
+		return result;
+	}
+	public List<BoardComment> selectBoardCommentList(int boardNo) {
+		Connection conn = getConnection();
+		List<BoardComment> list = boardDao.selectBoardCommentList(boardNo, conn);
+		close(conn);
+		return list ;
+	}
+	public int insertBoardComment(BoardComment bc) {
+		int result = 0;
+		Connection conn = null;
+		
+		try {
+			conn = getConnection();
+			result = boardDao.insertBoardComment(conn, bc);
+			commit(conn);
+		}catch(Exception e) {
+			rollback(conn);
+			throw e;
+		}finally {
+			close(conn);
+		}
+		
+		return result;
+	}
+	public int commentDelete(int commentNo) {
+		int result = 0;
+		Connection conn = null;
+		
+		try {
+			conn = getConnection();
+			result = boardDao.commentDelete(conn, commentNo);
+			commit(conn);
+		}catch(Exception e){
+			rollback(conn);
+			throw e;
 		}finally {
 			close(conn);
 		}

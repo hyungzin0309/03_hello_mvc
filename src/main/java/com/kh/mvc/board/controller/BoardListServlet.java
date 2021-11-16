@@ -52,6 +52,7 @@ public class BoardListServlet extends HttpServlet {
 		// 2.b 페이지바 부분
 		int totalContent = boardService.selectTotalContentCount();
 		String pagebar = MvcUtils.getPagebar(cPage,numPerPage,totalContent,url);
+				
 		
 		// 3. 응답처리
 		request.setAttribute("list",list);

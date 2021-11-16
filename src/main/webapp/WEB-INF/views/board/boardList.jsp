@@ -27,7 +27,7 @@
 				<td><%=board.getNo()%></td>
 				<td>
 					<a href="<%= request.getContextPath()%>/board/boardView?no=<%=board.getNo()%>">
-						<%=board.getTitle()%>
+						<%=board.getTitle()%> <%=board.getCommentCount()>0? "("+board.getCommentCount()+")":""%>
 					</a>
 				</td>
 				<td><%=board.getWriter()%></td>

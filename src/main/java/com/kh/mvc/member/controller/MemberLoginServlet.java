@@ -94,7 +94,9 @@ public class MemberLoginServlet extends HttpServlet {
 		// 4.응답처리 (jsp위임 | redirect)
 		// redirect 요청주소를 변경, 새로고침을 통한 오류를 방지
 		// location은 브라우져가 새로 요청할 주소
-		String location = request.getContextPath() + "/";
+//		String location = request.getContextPath() + "/";
+		String location = request.getHeader("Referer");
+		System.out.println("[MemberLoginServlet] request.getHeader(\"Referer\") = " + location);
 		response.sendRedirect(location);	
 	}
 }

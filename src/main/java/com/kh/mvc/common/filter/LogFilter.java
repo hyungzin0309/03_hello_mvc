@@ -22,9 +22,11 @@ public class LogFilter implements Filter {
 		// 전처리
 		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		String uri = httpRequest.getRequestURI(); // /mvc/member/View
+		String method = httpRequest.getMethod(); // /mvc/member/View
 		String queryString = httpRequest.getQueryString();
 		System.out.println("====================================");
-		System.out.println("uri : "+uri);
+		System.out.println("requsetUri : "+uri);
+		System.out.println("method : "+method);
 		if(queryString != null)
 			System.out.println(queryString);
 		System.out.println("------------------------------------");
