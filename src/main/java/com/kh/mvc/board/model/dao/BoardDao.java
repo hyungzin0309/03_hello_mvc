@@ -65,7 +65,7 @@ public class BoardDao {
 			
 		} catch (SQLException e) {
 			e.printStackTrace();
-			throw new BoardException();
+			throw new BoardException("게시물 불러오기 오류");
 		}finally {
 			close(rset);
 			close(pstmt);
@@ -471,4 +471,5 @@ public class BoardDao {
 		
 		return result;
 	}
+
 }

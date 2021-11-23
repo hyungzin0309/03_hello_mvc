@@ -41,6 +41,9 @@
 				<%-- 첨부파일이 있을경우만, 이미지와 함께 original파일명 표시 --%>
 				<img alt="첨부파일" src="<%=request.getContextPath() %>/images/file.png" width=16px>
 				<a href="<%= request.getContextPath() %>/board/fileDownload?no=<%= attach.getNo() %>"><%= attach.getOriginalFilename() %></a>
+				<span>
+					<%= attach %>
+				</span>
 			</td>
 		</tr>
 <% 
@@ -156,7 +159,7 @@
 	method="POST"
 	action="<%= request.getContextPath() %>/board/commentDelete">
 	<input type="hidden" name="commentNo"/>
-	<input type="hidden" name="boardNo"/>
+	<input type="hidden" name="boardNo" value="<%=board.getNo()%>"/>
 </form>
 <script>
 
@@ -164,7 +167,6 @@
 		if(confirm("댓글을 삭제하시겠습니까?")){
 			$(document.commentDelFrm)
 				.children("[name=commentNo]").val($(e.target).val())
-				.siblings("[name=boardNo]").val(<%=board.getNo()%>)
 				.parent().submit();
 		}
 	});

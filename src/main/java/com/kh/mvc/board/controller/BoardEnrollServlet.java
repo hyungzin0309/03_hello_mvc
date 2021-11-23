@@ -108,5 +108,6 @@ public class BoardEnrollServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
+	
 
 }

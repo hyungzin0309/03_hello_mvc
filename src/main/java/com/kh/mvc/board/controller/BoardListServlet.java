@@ -27,6 +27,8 @@ public class BoardListServlet extends HttpServlet {
 	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		
+		try {
 		// 1. 사용자입력값
 		
 		// 2. 업무로직
@@ -60,6 +62,10 @@ public class BoardListServlet extends HttpServlet {
 		request
 			.getRequestDispatcher("/WEB-INF/views/board/boardList.jsp")
 			.forward(request,response);
+		}catch(Exception e) {
+			e.printStackTrace();
+			throw e; //was에게 예외처리 던짐 -> web.xml에서 지정한 에러처리페이지로 이동
+		}
 	}
 
 }

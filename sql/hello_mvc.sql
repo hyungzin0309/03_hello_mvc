@@ -196,8 +196,6 @@ select
     *
 from
     board_comment
-where
-    board_no = 72
 start with
     comment_level = 1
 connect by prior
@@ -215,4 +213,54 @@ from(
         (select count(*) from board_comment where board_no = b.no) comment_count
     from
         board b);
+
+delete from board_comment where no = 10;
+commit;
+
+
+-------------------------------------------------------------------
+-- 사진게시판
+-------------------------------------------------------------------
+--drop table photo;
+create table photo(
+    no number,
+    writer varchar2(20),
+    content varchar2(2000),
+    original_filename varchar2(256) not null,
+    renamed_filename varchar2(256) not null,
+    reg_date date default sysdate,
+    read_count number default 0,
+    constraint pk_photo_no primary key(no),
+    constraint fk_photo_writer foreign key(writer) references member (member_id) on delete cascade
+);
+
+create sequence seq_photo_sequence_no;
+
+commit;
+
+select * from photo;
+
+
+select
+    *
+from
+    (select
+        row_number() over(order by no desc) rnum,
+        p.*
+    from
+        photo p
+    order by
+        rnum)
+where
+    rnum between 1 and 5;
+
+
+
+
+
+
+
+
+
+
 

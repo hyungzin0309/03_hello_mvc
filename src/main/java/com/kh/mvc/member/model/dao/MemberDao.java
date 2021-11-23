@@ -20,7 +20,7 @@ import com.kh.mvc.member.model.exception.MemberException;
 import com.kh.mvc.member.model.vo.Member;
 
 public class MemberDao {
-	Properties prop = new Properties();
+	private Properties prop = new Properties();
 	
 	public MemberDao() {
 		final String sqlConfigPath = MemberDao.class.getResource("/member_query.properties").getPath();
