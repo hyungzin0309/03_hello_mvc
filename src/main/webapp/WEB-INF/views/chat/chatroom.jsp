@@ -8,6 +8,7 @@ const ws = new WebSocket(`ws://\${host}<%=request.getContextPath()%>/chat/websoc
 ws.onopen = (e) => {
 	console.log("open",e);
 };
+//메세지 수신일 때 
 ws.onmessage = (e) => {
 	console.log("message", e);
 	const {data} = e;
@@ -41,7 +42,6 @@ ws.onclose = (e) => {
 };
 
 $(()=>{
-	console.log($("dm-client").val());
 	/**
 	* websocket message전송
 	*/
@@ -56,50 +56,47 @@ $(()=>{
 		ws.send(JSON.stringify(o));
 		
 		//#msg 초기화
-		$(msg).val('').focus();
-		
-		
+		$(msg).val('').focus();	
 	});
-		//keyup enter 이벤트(엔터시 send)
-		$(msg).keyup((e)=>{
-			if(e.key === 'Enter')
-				$(send).trigger("click");
+	
+	//keyup enter 이벤트(엔터시 send)
+	$(msg).keyup((e)=>{
+		if(e.key === 'Enter')
+			$(send).trigger("click");
+	});
+	$("#dm-client").mouseover((e)=>{
+		$.ajax({
+			url:"<%=request.getContextPath()%>/chat/memberList",
+			success(data){
+				console.log(data);
+				$(e.target).empty();
+				$(data).each((i,memberId)=>{ // json 문자열 통해 자바의 Set콜렉션을 배열 처리
+					$(e.target).append(`<option value = "\${memberId}">\${memberId}</option>`);
+				});
+			},
+			error:console.log
 		});
-		$("#dm-client").mouseover((e)=>{
-			$(e.target).empty()
-			$.ajax({
-				url:"<%=request.getContextPath()%>/chat/memberList",
-				success(data){
-					console.log(data);
-					$(data).map((i,memberId)=>{
-						$(e.target).append(`<option value = "\${memberId}">\${memberId}</option>`);
-					});
-				},
-				error:console.log
-			});
-		})
-		$("#dm-send").click((e) => {
-			const o = {
-				type: "dm",
-				sender: "<%= loginMember.getMemberid() %>",
-				receiver: $("#dm-client").val(), 
-				msg: $("#dm-msg").val(),
-				time: Date.now()
-			};
-			
-			$.ajax({
-				url: "<%= request.getContextPath() %>/chat/sendDm",
-				data: {
-					msg: JSON.stringify(o)
-				},
-				success(data){
-					console.log(data);
-				},
-				error: console.log
-			});
+	})
+	$("#dm-send").click((e) => {
+		const o = {
+			type: "dm",
+			sender: "<%= loginMember.getMemberid() %>",
+			receiver: $("#dm-client").val(), 
+			msg: $("#dm-msg").val(),
+			time: Date.now()
+		};
+		
+		$.ajax({
+			url: "<%= request.getContextPath() %>/chat/sendDm",
+			data: {
+				msg: JSON.stringify(o)
+			},
+			success(data){
+				console.log(data);
+			},
+			error: console.log
 		});
-		
-		
+	});
 });
 
 </script>

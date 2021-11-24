@@ -50,7 +50,7 @@ public class MemberLoginServlet extends HttpServlet {
 		System.out.println(session.getId());
 		
 		// timeout설정 - web.xml설정보다 우선순위가 높다.
-		session.setMaxInactiveInterval(10*60); // 초단위
+		session.setMaxInactiveInterval(5*60*60); // 초단위로 시작
 		
 		// 세션생성시각
 		System.out.println(new Date(session.getCreationTime())); 

@@ -32,5 +32,4 @@ public class ChatMemberListServlet extends HttpServlet {
 		response.setContentType("application/json; charset=utf-8");
 		new Gson().toJson(memberIdSet,response.getWriter());
 	}
-
 }
