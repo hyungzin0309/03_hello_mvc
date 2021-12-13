@@ -6,6 +6,10 @@ import java.util.List;
 
 public class Board extends BoardEntity implements Serializable{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private int commentCount;
 	private int attachCount; // 첨부파일 수
 	private List<Attachment> attachments;

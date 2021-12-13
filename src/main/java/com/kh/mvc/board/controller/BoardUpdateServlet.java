@@ -126,7 +126,6 @@ public class BoardUpdateServlet extends HttpServlet {
 				msg = "수정 실패: 관리자에 문의";
 				location = request.getContextPath() + "/board/boardUpdate?no=" + board.getNo();
 			}
-			
 			// a. 기존첨부파일 삭제
 			if(delFiles != null) {
 				for(String temp : delFiles) {
@@ -154,5 +153,4 @@ public class BoardUpdateServlet extends HttpServlet {
 			e.printStackTrace();
 		}
 	}
-
 }

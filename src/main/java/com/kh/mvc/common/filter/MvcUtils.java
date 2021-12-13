@@ -16,7 +16,7 @@ public class MvcUtils {
 	 * 비밀번호 암호화 처리 메소드
 	 * 
 	 * 1. 암호화 처리 (MessageDigest)
-	 * 
+	 *  
 	 * 2. 암호화된 이진 배열을 문자열로 인코딩 처리 Base64Encoder
 	 * 
 	 */

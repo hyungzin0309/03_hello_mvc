@@ -23,7 +23,7 @@ public class JdbcTemplate {
 	
 	static {
 		// resources/datasource.properties 내용 불러오기
-//		final String datasourceConfigPath = "datasource.properties";
+		//final String datasourceConfigPath = "datasource.properties";
 		
 		// build-path의 절대경로 가져오기
 		// / -> /src/main/sebapp/WEB-INF/classes/

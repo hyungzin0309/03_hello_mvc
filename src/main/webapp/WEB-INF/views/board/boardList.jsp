@@ -5,7 +5,6 @@
 <%@ include file="/WEB-INF/views/common/header.jsp" %>
 <%
 	List<Board> list = (List<Board>)request.getAttribute("list");
-	
 %>
 <link rel="stylesheet" href="<%=request.getContextPath()%>/css/board.css" />
 <section id="board-container">
